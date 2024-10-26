@@ -1,1 +1,1 @@
-dPath = '/home/...' #add location of project here
+dPath = '/home/...' #add location of default download folder
