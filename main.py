@@ -2,7 +2,7 @@ import yt_dlp as ydl
 import os
 from config import *
 
-def download_youtube_video(url, resolution="720p", output_dir=dPath):
+def download_youtube_video(url, resolution="720p", output_dir=dPath, download_playlist=False):
     """
     Download a YouTube video at a specified resolution to a designated folder.
 
@@ -20,7 +20,7 @@ def download_youtube_video(url, resolution="720p", output_dir=dPath):
         'format': f'bestvideo[height<={resolution[:-1]}]+bestaudio/best',  # Select video and audio formats
         'outtmpl': os.path.join(output_dir, '%(title)s.%(ext)s'),          # Set output path and file name
         'merge_output_format': 'mp4',                                      # Ensure the output format is mp4 after merging
-        'noplaylist': True                                                 # Download only the video, not the playlist
+        'noplaylist': not download_playlist                                # True = Download only the video, not the playlist
     }
 
     try:
@@ -33,6 +33,17 @@ def download_youtube_video(url, resolution="720p", output_dir=dPath):
         print(f"An error has occurred: {e}")
 
 
+def download_youtube_playlist(url, resolution="720p", output_dir=dPath):
+    """
+    Download a YouTube playlist at a specified resolution to a designated folder.
+
+    Parameters:
+        url (str): URL of the YouTube playlist to download.
+        resolution (str): Desired video resolution (e.g., "720p"). Defaults to "720p".
+        output_dir (str): Directory to save the downloaded video. Defaults to the current directory.
+    """
+    download_youtube_video(url, resolution, output_dir, download_playlist=True)
+
 
 if __name__ == '__main__':
     # Dev version to be launched from IDE terminal and take interactive input (unless hard-coded)
@@ -42,4 +53,5 @@ if __name__ == '__main__':
     if not link:
         link = input("Enter the link to download: ")
 
-    download_youtube_video(link)
+    #download_youtube_video(link)
+    download_youtube_playlist(link)
